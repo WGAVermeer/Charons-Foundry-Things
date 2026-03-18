@@ -21,32 +21,51 @@ However by not bashing your head into trying to change a 1 into an x for a dx di
 
 #### Calculation
 
-Let:
-x = number of dice
-y = number of faces
-z = number of times Fickle Attack was selected
+Let:   
+x = number of dice  
+y = number of faces  
+z = number of times Fickle Attack was selected  
 
-$${x}d{y}max{y - z} + (z) * x$$
+$$(x)d(y)max(y - z) + (z) * (x)$$
 
-So for x = 2, y = 6, z - 1:
-$$ 2d6max5 + 1 * 2 $$
+So for x = 2, y = 6, z = 1:  
+
+$$2d6max5 + 1 * 2$$
 
 #### Justification
 
-For a d6 diceroll we want to achieve the following result.
-1, 2, 3, 4, 5, 6
-Turns into:
-6, 2, 3, 4, 5, 6
+For a d6 diceroll we want to achieve the following possible result.  
+1, 2, 3, 4, 5, 6  
+Which with Fickle Attack should become:  
+6, 2, 3, 4, 5, 6  
+Or shifted around:  
+2, 3, 4, 5, 6, 6  
 
-A roll:
-1, 2, 3, 4, 5, 6
+---
 
-max5:
-1, 2, 3, 4, 5, 5
+So our goal is that dice result.
 
-Shift results by 1:
-2, 3, 4, 5, 6, 6
+A normal 1d6 roll has the following possible face values:  
+1, 2, 3, 4, 5, 6  
 
-#### Calculation
+After using our max5 function:  
+1, 2, 3, 4, 5, 5  
 
+Shift results by 1 (z):  
+2, 3, 4, 5, 6, 6  
+
+Tada! Goal achieved!  
+
+Completely clear right? ... Right?  
+The above really gives us this variant of a function:
+$1d6max5 + 1$  
+But we can revert this back to the general form by choosing our values for x,y,z correctly  
+Here x = 1, y = 6, z = 1. => $(x)d(y)max(y - z) + (z) * (x)$  
 #### Alchemist-Specific
+If your dice aren't as static as choosing one value for the next 10 levels it might be handy to put a bit more time into automating it.
+For alchemist I did the following using my earlier formula:
+```
+(ceil(@class.level / 2) - 1)d6max5 + 1 * (ceil(@class.level / 2) - 1)
+```
+The only real difference here is that the value for x is dynamic.  
+x = (ceil(@class.level / 2) - 1)
