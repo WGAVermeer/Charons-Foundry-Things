@@ -1,43 +1,57 @@
 # Introduction
 
-Hey! I tend to play a lot of Pathfinder 1e on Foundryvtt.
-I also like to waste my time automating parts of the game.
+Hey! I tend to play a lot of Pathfinder 1e on Foundryvtt.  
+I also like to waste my time automating parts of the game.  
 So here are some of those automations!
+
+---
 
 ## Mythic Trickster
 
 ### Fickle Attack (Ex)
 
-Whenever you roll damage for a melee or ranged attack with a weapon or alchemical item,
-you can treat any natural 0s on the damage dice as if they were the highest possible number on those dice.
-You can select this ability up to three times.
-The second time you select it, treat 1s and 2s as the highest value.
-The third time, treat 1s, 2s, and 3s as the highest value
+Whenever you roll damage for a melee or ranged attack with a weapon or alchemical item,  
+you can treat any natural 0s on the damage dice as if they were the highest possible number on those dice.  
+
+You can select this ability up to three times.  
+- The second time you select it, treat 1s and 2s as the highest value.  
+- The third time, treat 1s, 2s, and 3s as the highest value.
 
 ---
 
-So there isn't straightforward way (that I know of) to implement this using a single roll function.
-However by not bashing your head into trying to change a 1 into an x for a dx diceroll it opens up some options.
+So there isn't straightforward way (that I know of) to implement this using a single roll function.  
+However, by not bashing your head into trying to change a 1 into an x for a dx diceroll, it opens up some options.
 
-#### Calculation
+---
 
-Let:   
-x = number of dice  
-y = number of faces  
-z = number of times Fickle Attack was selected  
+## Calculation
 
-$$(x)d(y)max(y - z) + (z) * (x)$$
+**Let:**
+- x = number of dice  
+- y = number of faces  
+- z = number of times Fickle Attack was selected  
 
-So for x = 2, y = 6, z = 1:  
+$$
+(x)d(y)\text{max}(y - z) + (z) * (x)
+$$
 
-$$2d6max5 + 1 * 2$$
+**Example:**  
+For x = 2, y = 6, z = 1:
 
-#### Justification
+$$
+2d6\text{max}5 + 1 * 2
+$$
 
-For a d6 diceroll we want to achieve the following possible result.  
+---
+
+## Justification
+
+For a d6 diceroll we want to achieve the following possible result:  
 1, 2, 3, 4, 5, 6  
+
 Which with Fickle Attack should become:  
 6, 2, 3, 4, 5, 6  
+
 Or shifted around:  
 2, 3, 4, 5, 6, 6  
 
@@ -54,18 +68,31 @@ After using our max5 function:
 Shift results by 1 (z):  
 2, 3, 4, 5, 6, 6  
 
-Tada! Goal achieved!  
+Tada! Goal achieved!
 
-Completely clear right? ... Right?  
-The above really gives us this variant of a function:
-$1d6max5 + 1$  
-But we can revert this back to the general form by choosing our values for x,y,z correctly  
-Here x = 1, y = 6, z = 1. => $(x)d(y)max(y - z) + (z) * (x)$  
-#### Alchemist-Specific
-If your dice aren't as static as choosing one value for the next 10 levels it might be handy to put a bit more time into automating it.
+Completely clear right? ... Right?
+
+---
+
+The above really gives us this variant of a function:  
+$1d6\text{max}5 + 1$  
+
+But we can revert this back to the general form by choosing our values for x, y, z correctly.  
+
+Here x = 1, y = 6, z = 1  
+→ $(x)d(y)\text{max}(y - z) + (z) * (x)$  
+
+---
+
+## Alchemist-Specific
+
+If your dice aren't as static as choosing one value for the next 10 levels, it might be handy to put a bit more time into automating it.
+
 For alchemist I did the following using my earlier formula:
-```
+
+```text
 (ceil(@class.level / 2) - 1)d6max5 + 1 * (ceil(@class.level / 2) - 1)
 ```
-The only real difference here is that the value for x is dynamic.  
+The only real difference here is that the value for x is dynamic.
+
 x = (ceil(@class.level / 2) - 1)
