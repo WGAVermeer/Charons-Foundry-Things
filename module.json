@@ -1,0 +1,15 @@
+{
+  "id": "charon-modules",
+  "title": "Charon's Macro Compendiums",
+  "description": "A collection of Macros primarilly for Pathfinder 1e ",
+  "authors": [
+    {
+      "name": "Charon"
+    }
+  ],
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  }
+}
