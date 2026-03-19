@@ -85,8 +85,13 @@ Here x = 1, y = 6, z = 1
 
 If your dice aren't as static as choosing one value for the next 10 levels, it might be handy to put a bit more time into automating it.
 
-For alchemist I did the following using my earlier formula:
+For alchemist I did the following using my earlier formulas:
 
+Base damage:
+```text
+1d6max5 + 1
+```
+Scaling damage:
 ```text
 (ceil(@class.level / 2) - 1)d6max5 + 1 * (ceil(@class.level / 2) - 1)
 ```
